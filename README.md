@@ -2,7 +2,8 @@
 
 `clean-shutdown` is a simple daemon that monitors a user-specified GPIO pin and triggers a clean software shutdown when that pin is asserted low. It offers ways to customise the behaviour of the shutdown process to fit most use-cases.
 
-This fork adds some changes enabling compatibility with RPi4 running raspios_arm64-2024-07-04.
+> [!IMPORTANT]
+> This fork adds some changes enabling compatibility with RPi4 running raspios_arm64-2024-07-04.
 
 ## Installation
 
@@ -18,21 +19,6 @@ If you need to however, for example because the above command states that your o
 
 Note that the setup script expects an integer value between 4 and 27 (you can use others outside this range by manually editing the config file as explained below, but there are caveats so if it does not quite work, you're on your own!)
 
-Finally add dtoverlays to `/boot/firmware/config.txt`:
-```
-dtoverlay=gpio-poweroff,gpiopin=4,active_low=1,input1
-dtoverlay=gpio-shutdown,gpio_pin=17,active_low=1,debounbce=1000
-```
-
-
-## Supported Products
-
-In addition to the generic install described above, where you get to choose your preferred custom trigger pin, the following specific products are supported:
-
-* OnOff SHIM - Uses BCM 17 as trigger and LED pin, and BCM 4 as the power off pin; argument to pass: onoffshim
-* Zero LiPo / LiPo SHIM - Uses BCM 4 as the power off pin; argument to pass: zerolipo
-
-You may pass the `setup.sh` the product as an argument, as detailed above. HOWEVER, again, we recommend that you use our one-line installers, which are better equipped to handle some specific distributions idiosyncracies.
 
 ### OnOff SHIM
 

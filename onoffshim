@@ -981,7 +981,7 @@ if confirm "Do you wish to continue?"; then
         echo -e "\nAll done. Enjoy your $productname!\n"
     else # custom block starts here
         echo -e "\nFinalising Install...\n"
-        add_dtoverlay "gpio-shutdown,gpio_pin=17,active_low=1,gpio_pull=up,debounce=1000"
+        add_dtoverlay "gpio-shutdown,gpio_pin=17,active_low=1,gpio_pull=up,debounce1000"
         add_dtoverlay "gpio-poweroff,gpiopin=4,active_low=1"
         cd $installdir/$gitclonedir && ./setup.sh -y onoffshim
         cd $installdir && rm -r $installdir/$gitclonedir &> /dev/null
