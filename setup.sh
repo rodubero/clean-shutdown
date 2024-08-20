@@ -52,7 +52,7 @@ UPDATE_DB=false
 
 AUTOSTART=~/.config/lxsession/LXDE-pi/autostart
 BOOTCMD=/boot/cmdline.txt
-CONFIG=/boot/config.txt
+CONFIG=/boot/firmware/config.txt
 APTSRC=/etc/apt/sources.list
 INITABCONF=/etc/inittab
 BLACKLIST=/etc/modprobe.d/raspi-blacklist.conf

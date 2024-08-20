@@ -32,8 +32,8 @@ if [ -f /etc/cleanshutd.conf ]; then
     source /etc/cleanshutd.conf
 fi
 
-if grep -q "^[[:space:]]*disable_cleanshutd=1" /boot/config.txt; then
-    echo "cleanshutd is disabled in /boot/config.txt"
+if grep -q "^[[:space:]]*disable_cleanshutd=1" /boot/firmware/config.txt; then
+    echo "cleanshutd is disabled in /boot/firmware/config.txt"
     exit 1
 elif [ "$daemon_active" == 0 ]; then
     echo "cleanshutd is disabled in /etc/cleanshutd.conf"
@@ -47,14 +47,14 @@ else
 fi
 
 if [ "$trigger_pin" != "$led_pin" ]; then
-    raspi-gpio set $led_pin op dh
+    pinctrl set $led_pin op dh
 fi
 
-raspi-gpio set $trigger_pin ip pu
+pinctrl set $trigger_pin ip pu
 echo "monitoring BCM $trigger_pin"
 
 trigger_pin_low() {
-    raspi-gpio get $trigger_pin | grep -q "level=0 fsel=0 func=INPUT"
+    pinctrl get $trigger_pin | grep -q "lo //"
 }
 
 shutdown_trigger() {
@@ -95,14 +95,14 @@ while true; do
 
     while [ "$daemon" = "off" ]; do
         if [ ! -f /var/run/nologin ]; then
-            raspi-gpio set $trigger_pin ip pu
+            pinctrl set $trigger_pin ip pu
             daemon="on"
             break
         fi
         if [ "$led_pin" != "off" ]; then
-            raspi-gpio set $led_pin op dl
+            pinctrl set $led_pin op dl
             sleep 0.1
-            raspi-gpio set $led_pin op dh
+            pinctrl set $led_pin op dh
             sleep $blink_time
         else
             sleep $polling_rate

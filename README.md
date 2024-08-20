@@ -2,6 +2,8 @@
 
 `clean-shutdown` is a simple daemon that monitors a user-specified GPIO pin and triggers a clean software shutdown when that pin is asserted low. It offers ways to customise the behaviour of the shutdown process to fit most use-cases.
 
+This fork adds some changes enabling compatibility with RPi4 running raspios_arm64-2024-07-04.
+
 ## Installation
 
 The `setup.sh` script provided in this repository can be used to set your preference of GPIO pin to monitor in order to initiate the shutdown. To install support for a specific product however, such as OnOff SHIM or Zero LiPo, we recommend you use the one-line installers listed further down the page.
@@ -15,6 +17,13 @@ curl https://get.pimoroni.com/cleanshutdown | bash
 If you need to however, for example because the above command states that your operating system is not supported, clone this repository locally and run `setup.sh`. When prompted, enter the pin you would you like to use as trigger for the shutdown.
 
 Note that the setup script expects an integer value between 4 and 27 (you can use others outside this range by manually editing the config file as explained below, but there are caveats so if it does not quite work, you're on your own!)
+
+Finally add dtoverlays to `/boot/firmware/config.txt`:
+```
+dtoverlay=gpio-poweroff,gpiopin=4,active_low=1,input1
+dtoverlay=gpio-shutdown,gpio_pin=17,active_low=1,debounbce=1000
+```
+
 
 ## Supported Products
 
@@ -119,6 +128,6 @@ sudo systemctl disable cleanshutd
 
 There is another way, which is provided as an emergency solution for scenarios where reaching the bash prompt is not possible (because the Pi shuts down before you get a chance to do so).
 
-In such cases, or as an alternative to the above, you may add the following to your `/boot/config.txt` file from another computer:
+In such cases, or as an alternative to the above, you may add the following to your `/boot/firmware/config.txt` file from another computer:
 
 `disable_cleanshutd=1`
